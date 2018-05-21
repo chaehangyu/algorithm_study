@@ -1,0 +1,45 @@
+#include <stdio.h>
+
+const long long mod = 10000000;
+
+long long dp[101][101];
+
+long long get_num(int up, int down)
+{
+	return (up + down - 1);
+}
+
+long long get_dp(int tot, int bot)
+{
+	if (dp[tot][bot] != 0) return dp[tot][bot];
+
+	if (tot == bot) return dp[tot][bot] = 1;
+
+	for (int i = 1; i <= tot - bot;i++) dp[tot][bot] = (dp[tot][bot] + (get_dp(tot - bot, i)*get_num(i, bot)) % mod) % mod;
+	
+	return dp[tot][bot];
+}
+
+int main()
+{
+	int C;
+
+	scanf("%d", &C);
+
+	for (int tc = 0; tc < C; tc++)
+	{
+		int n;
+		long long ans = 0;
+
+		scanf("%d", &n);
+
+		for (int i = 1; i <= n; i++)
+		{
+			ans = (ans + get_dp(n, i));
+			ans %= mod;
+		}
+
+		printf("%lld\n", ans);
+	}
+	return 0;
+}
